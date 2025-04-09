@@ -242,7 +242,9 @@ func (u *Updater) downloadAndReplaceApp(asset Asset) error {
 	if err != nil {
 		return errors.Wrap(err, "get executable")
 	}
+	fmt.Println("executable:", executable)
 	appPath, err := appPathFromExecutable(executable)
+	fmt.Println("appPath:", appPath)
 	if err != nil {
 		return errors.Wrap(err, "find app path")
 	}
@@ -287,13 +289,18 @@ type Asset struct {
 // appPathFromExecutable gets the .app path from the currently
 // running executable.
 func appPathFromExecutable(p string) (string, error) {
-	//if !strings.HasSuffix(p, "/Contents/MacOS/ytd") {
+	return p, nil
+	//if !strings.HasSuffix(p, "/Contents/MacOS/wails-react-3-demo") {
 	//	return "", errors.New("executable not where it should be")
 	//}
-	return strings.TrimSuffix(p, "/Users/bytedance/go/src/wails-react-3-demo/bin"), nil
+	//if !strings.HasSuffix(p, "wails-react-3-demo.app/Contents/MacOS/wails-react-3-demo") {
+	//	return "", errors.New("executable not where it should be")
+	//}
+	//
+	//return strings.TrimSuffix(p, "wails-react-3-demo"), nil
 }
 
-func AppUpdate() {
+func AppUpdate() error {
 	updater := &Updater{
 		CurrentVersion:              version,
 		LatestReleaseGitHubEndpoint: LatestReleaseGitHubEndpoint,
@@ -324,12 +331,12 @@ func AppUpdate() {
 	}
 	if selectedAsset == nil {
 		fmt.Println("no selected asset")
-		return
+		return err
 	}
 	fmt.Println(selectedAsset)
 	err = updater.downloadAndReplaceApp(*selectedAsset)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
-	return
+	return err
 }

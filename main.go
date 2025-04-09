@@ -31,6 +31,7 @@ func main() {
 		Name:        "wails-react-3-demo",
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
+			application.NewService(NewResourceService()),
 			application.NewService(&GreetService{}),
 		},
 		Assets: application.AssetOptions{

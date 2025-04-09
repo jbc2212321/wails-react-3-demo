@@ -1,6 +1,7 @@
 package update
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -11,11 +12,19 @@ import (
 	"github.com/rhysd/go-github-selfupdate/selfupdate"
 )
 
-const Version = "0.1.9"
+const Version = "0.1.5"
 
 func DoSelfUpdate() bool {
 	v := semver.MustParse(Version)
-	latest, err := selfupdate.UpdateSelf(v, "achhabra2/riftshare")
+
+	up, err := selfupdate.NewUpdater(selfupdate.Config{
+		APIToken: "***",
+	})
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	latest, err := up.UpdateSelf(v, "jbc2212321/wails-react-3-demo")
 	if err != nil {
 		log.Println("Binary update failed:", err)
 		return false
@@ -31,8 +40,24 @@ func DoSelfUpdate() bool {
 	}
 }
 
+func doSelfUpdate() {
+	v := semver.MustParse(version)
+	latest, err := selfupdate.UpdateSelf(v, "myname/myrepo")
+	if err != nil {
+		log.Println("Binary update failed:", err)
+		return
+	}
+	if latest.Version.Equals(v) {
+		// latest version is the same as current version. It means current binary is up to date.
+		log.Println("Current binary is the latest version", version)
+	} else {
+		log.Println("Successfully updated to version", latest.Version)
+		log.Println("Release note:\n", latest.ReleaseNotes)
+	}
+}
+
 func DoSelfUpdateMac() bool {
-	latest, found, _ := selfupdate.DetectLatest("achhabra2/riftshare")
+	latest, found, _ := selfupdate.DetectLatest("jbc2212321/wails-react-3-demo")
 	if found {
 		homeDir, _ := os.UserHomeDir()
 		downloadPath := filepath.Join(homeDir, "Downloads", "RiftShare.zip")

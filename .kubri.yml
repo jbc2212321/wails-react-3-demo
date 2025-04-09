@@ -1,0 +1,24 @@
+source:
+  type: github
+  owner: jbc2212321
+  repo: wails-react-3-demo
+
+target:
+  type: github
+  owner: jbc2212321
+  repo: wails-react-3-demo
+  branch: mac
+
+
+# Use an empty object to enable the integration with default settings.
+apt: {}
+yum: {}
+apk: {}
+appinstaller: {}
+
+sparkle:
+  title: My app feed title
+  description: My app feed description
+  params:
+    - os: macos
+      minimum-system-version: '0.13.0'
